@@ -608,6 +608,12 @@ export function triggerReveals(container = document) {
   els.forEach(el => ro.observe(el));
 }
 
-export function renderFacebookPosts(posts) {
-  console.log("Facebook posts:", posts);
+export function triggerReveals(container = document) {
+  const elements = container.querySelectorAll("[data-reveal]");
+
+  elements.forEach((el, i) => {
+    setTimeout(() => {
+      el.classList.add("revealed");
+    }, i * 50);
+  });
 }
