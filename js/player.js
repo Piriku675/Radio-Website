@@ -16,6 +16,13 @@ const miniEq    = document.getElementById("miniEq");
 const miniOuter = document.getElementById("miniOuter");
 const miniPlayer= document.getElementById("miniPlayer");
 
+function setBuffering(v) {
+  if (playBtn) playBtn.classList.toggle("buffering", v);
+  if (miniBtn) miniBtn.classList.toggle("buffering", v);
+  if (eq)      eq.classList.toggle("buffering", v);
+  if (miniEq)  miniEq.classList.toggle("buffering", v);
+}
+
 function setPlaying(v) {
   playing = v;
   const icon = v ? "⏸" : "▶";
@@ -23,20 +30,24 @@ function setPlaying(v) {
   if (miniBtn) miniBtn.textContent  = icon;
   if (eq)      eq.classList.toggle("playing", v);
   if (miniEq)  miniEq.classList.toggle("playing", v);
+  setBuffering(false);
 }
 
 function startPlay() {
   if (!audio) return;
   const src = audio.querySelector("source")?.src;
   if (src) audio.src = src;
-  audio.play().catch(() => {});
-  setPlaying(true);
+  setBuffering(true);
+  if (playBtn) playBtn.textContent = "";
+  if (miniBtn) miniBtn.textContent = "";
+  audio.play().catch(() => { setBuffering(false); });
 }
 
 function stopPlay() {
   if (!audio) return;
   audio.pause();
   setPlaying(false);
+  setBuffering(false);
   clearTimeout(reconnectTimer);
 }
 
@@ -48,7 +59,15 @@ if (miniBtn)   miniBtn.addEventListener("click", e => { e.stopPropagation(); tog
 if (recordBtn) recordBtn.addEventListener("click", () => recordBtn.classList.toggle("active"));
 
 if (audio) {
+  audio.addEventListener("playing", () => {
+    playing = true;
+    setPlaying(true);
+  });
+  audio.addEventListener("waiting", () => {
+    if (playing) setBuffering(true);
+  });
   audio.addEventListener("error", () => {
+    setBuffering(false);
     if (playing) reconnectTimer = setTimeout(startPlay, 4000);
   });
   audio.addEventListener("ended", () => {
