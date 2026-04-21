@@ -1,7 +1,7 @@
 // ── HOME PAGE CONTROLLER ──────────────────────
 import {
   getActivePromoStrip, getLiveStream, getFeaturedShow,
-  getLatestArticles, getTodaySchedule, getFacebookPosts,
+  getLatestArticles, getTodaySchedule, 
   getCurrentPromotion, getStationConfig
 } from "../data-service.js";
 import {
