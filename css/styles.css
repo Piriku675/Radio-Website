@@ -365,6 +365,27 @@ nav {
 .eq-bar:nth-child(5) { height: 8px;  animation-delay: .15s; }
 @keyframes eqB { from { transform: scaleY(.25) } to { transform: scaleY(1) } }
 
+/* Buffering spinner on play button */
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-play.buffering,
+.mini-play-btn.buffering {
+  position: relative;
+  color: transparent;
+}
+.btn-play.buffering::after,
+.mini-play-btn.buffering::after {
+  content: "";
+  position: absolute;
+  width: 22px; height: 22px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+.equalizer.buffering {
+  opacity: 0;
+}
+
 /* ══════════════════════════════
    HOST ROW
 ══════════════════════════════ */
