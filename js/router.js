@@ -48,7 +48,7 @@ const loaders = {
 const navIds = ["listen","shows","hosts","blog","promotions","about","contact"];
 let currentPage = null;
 
-export function showPage(id, contextId = null) {
+function renderPage(id, contextId = null, pushState = true) {
   if (!pageMap[id]) { console.warn("Unknown page:", id); return; }
 
   // Hide all
@@ -80,8 +80,28 @@ export function showPage(id, contextId = null) {
 
   currentPage = id;
 
+  // Push browser history so native back button works
+  if (pushState) {
+    const state = { page: id, contextId };
+    const url   = contextId ? `#${id}/${contextId}` : `#${id}`;
+    history.pushState(state, "", url);
+  }
+
   // Close mobile menu
   document.getElementById("mobileMenu")?.classList.remove("open");
 }
+
+export function showPage(id, contextId = null) {
+  renderPage(id, contextId, true);
+}
+
+// Handle native back/forward button
+window.addEventListener("popstate", e => {
+  if (e.state?.page) {
+    renderPage(e.state.page, e.state.contextId, false);
+  } else {
+    renderPage("home", null, false);
+  }
+});
 
 export function getCurrentPage() { return currentPage; }
