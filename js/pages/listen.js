@@ -8,6 +8,7 @@ import {
   renderListenLiveHost, renderListenFeatures
 } from "../renderers.js";
 import { watchLiveStream as watchStream } from "../data-service.js";
+import { getContactInfo } from "../data-service.js";
 
 let unsubscribeLive = null;
 
