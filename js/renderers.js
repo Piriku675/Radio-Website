@@ -607,13 +607,3 @@ export function triggerReveals(container = document) {
   }, { threshold: 0.05 });
   els.forEach(el => ro.observe(el));
 }
-
-export function triggerReveals(container = document) {
-  const elements = container.querySelectorAll("[data-reveal]");
-
-  elements.forEach((el, i) => {
-    setTimeout(() => {
-      el.classList.add("revealed");
-    }, i * 50);
-  });
-}
