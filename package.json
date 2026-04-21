@@ -1,0 +1,12 @@
+{
+  "name": "wvbz-radio-station",
+  "version": "1.0.0",
+  "description": "WVBZ 98.7 — Full radio station website powered by Firebase Firestore",
+  "type": "module",
+  "scripts": {
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "firebase": "^10.12.2"
+  }
+}

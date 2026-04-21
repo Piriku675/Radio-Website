@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WVBZ 98.7 — The Voice of the City</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<audio id="stream" preload="none"><source src="" type="audio/mpeg" /></audio>
+
+<!-- ══════════════════════════════
+     NAVBAR
+══════════════════════════════ -->
+<nav>
+  <div class="logo" id="logo-text" onclick="showPage('home')">WV<span>BZ</span> 98.7</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('listen')" id="nav-listen">Listen Live</a></li>
+    <li><a onclick="showPage('shows')"  id="nav-shows">Shows</a></li>
+    <li><a onclick="showPage('hosts')"  id="nav-hosts">Hosts</a></li>
+    <li><a onclick="showPage('blog')"   id="nav-blog">Blog</a></li>
+    <li><a onclick="showPage('promotions')" id="nav-promotions">Promotions</a></li>
+    <li><a onclick="showPage('about')"  id="nav-about">About</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home')">Home</a>
+  <a onclick="showPage('listen')">Listen Live</a>
+  <a onclick="showPage('shows')">Shows</a>
+  <a onclick="showPage('hosts')">Hosts</a>
+  <a onclick="showPage('blog')">Blog</a>
+  <a onclick="showPage('promotions')">Promotions</a>
+  <a onclick="showPage('about')">About</a>
+  <a onclick="showPage('contact')">Contact</a>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: HOME
+══════════════════════════════ -->
+<div class="page" id="page-home">
+
+  <!-- Promo strip (shared, dynamic) -->
+  <div class="promo promo-strip-dynamic reveal" style="display:none">
+    <div class="promo-label">Promo</div>
+    <div class="promo-text">
+      <strong></strong>
+      <span></span>
+    </div>
+    <div class="promo-arrow">→</div>
+  </div>
+
+  <div class="home-grid">
+    <div class="home-main">
+
+      <!-- Compact player -->
+      <div class="compact-player reveal" onclick="showPage('listen')">
+        <div class="compact-thumb" id="compact-thumb-img">
+          <div class="loading-pulse" style="width:100%;height:100%"></div>
+        </div>
+        <div class="compact-player-info">
+          <div class="compact-on-air">
+            <div class="on-air-dot" style="position:static;width:5px;height:5px"></div>
+            On Air Now
+          </div>
+          <div class="compact-show" id="compact-show-name">
+            <div class="loading-pulse" style="width:140px;height:12px"></div>
+          </div>
+          <div class="compact-go">Go to full player →</div>
+        </div>
+        <button class="compact-play-btn" onclick="event.stopPropagation();showPage('listen')">▶</button>
+      </div>
+
+      <!-- Current show -->
+      <div class="section reveal" style="padding:0">
+        <div style="padding:var(--sp) var(--sp) 10px"><div class="section-label">Current Show</div></div>
+        <div class="current-show-card" id="current-show-card">
+          <div class="cs-art">
+            <div class="loading-pulse" style="width:100%;height:100%"></div>
+          </div>
+          <div class="cs-body">
+            <div class="cs-label">
+              <div class="on-air-dot" style="position:static;width:5px;height:5px"></div>
+              Live Now
+            </div>
+            <div class="cs-name">
+              <div class="loading-pulse" style="width:120px;height:14px"></div>
+            </div>
+            <div class="cs-host">
+              <div class="loading-pulse" style="width:180px;height:11px;margin-top:4px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latest blog -->
+      <div class="section reveal" style="padding-left:0;padding-right:0;padding-top:var(--sp)">
+        <div style="padding:0 var(--sp) 10px"><div class="section-label">Latest Articles</div></div>
+        <ul class="blog-list" id="home-blog-list">
+          <li style="padding:var(--sp)"><div class="loading-pulse" style="height:60px"></div></li>
+          <li style="padding:var(--sp)"><div class="loading-pulse" style="height:60px"></div></li>
+        </ul>
+      </div>
+
+    </div><!-- /home-main -->
+
+    <div class="home-side">
+
+      <!-- Promo highlight -->
+      <div class="promo-card reveal" id="promo-highlight-card" style="display:none">
+        <div class="promo-card-label">Active Promo</div>
+        <div class="promo-card-title"></div>
+        <div class="promo-card-text"></div>
+        <div class="promo-card-cta">View Promotion →</div>
+      </div>
+
+      <!-- Today's schedule -->
+      <div class="section reveal">
+        <div class="section-label">Today's Schedule</div>
+        <ul class="sched-short" id="home-schedule-list">
+          <li style="padding:8px 0"><div class="loading-pulse" style="height:12px"></div></li>
+          <li style="padding:8px 0"><div class="loading-pulse" style="height:12px"></div></li>
+          <li style="padding:8px 0"><div class="loading-pulse" style="height:12px"></div></li>
+        </ul>
+        <a class="view-schedule" onclick="showPage('listen')">Full schedule →</a>
+      </div>
+
+      <!-- Facebook feed -->
+      <div class="section reveal" style="padding:0">
+        <div style="padding:var(--sp) var(--sp) 12px"><div class="section-label">Facebook</div></div>
+        <div class="fb-preview" id="fb-feed-container">
+          <div class="fb-header">
+            <div class="fb-icon">f</div>
+            <div>
+              <div class="fb-name">WVBZ 98.7</div>
+              <div class="fb-follow"></div>
+            </div>
+          </div>
+          <div id="fb-posts">
+            <div class="fb-post"><div class="loading-pulse" style="height:40px"></div></div>
+          </div>
+          <div class="fb-footer">
+            <div class="fb-footer-link">View on Facebook →</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /home-side -->
+  </div><!-- /home-grid -->
+
+  <footer class="reveal">
+    <div class="footer-links">
+      <a onclick="showPage('contact')">Facebook</a>
+      <a onclick="showPage('contact')">TikTok</a>
+      <a onclick="showPage('contact')">WhatsApp</a>
+    </div>
+    <div class="footer-copy"></div>
+  </footer>
+</div><!-- /page-home -->
+
+
+<!-- ══════════════════════════════
+     PAGE: LISTEN LIVE
+══════════════════════════════ -->
+<div class="page active" id="page-listen">
+
+  <!-- Promo strip -->
+  <div class="promo promo-strip-dynamic reveal" style="display:none">
+    <div class="promo-label">Promo</div>
+    <div class="promo-text"><strong></strong><span></span></div>
+    <div class="promo-arrow">→</div>
+  </div>
+
+  <!-- Player -->
+  <div class="player-wrap reveal" id="mainPlayerWrap">
+    <div class="player-bg"></div>
+    <div class="player-bg-art"></div>
+    <div class="on-air" id="on-air-badge" style="display:none">
+      <div class="on-air-dot"></div>
+      ON AIR NOW
+    </div>
+    <div class="player-info">
+      <div class="show-name" id="player-show-name">
+        <div class="loading-pulse" style="width:200px;height:28px"></div>
+      </div>
+      <div class="show-tag"  id="player-show-tag"></div>
+      <div class="show-time" id="player-show-time"></div>
+    </div>
+    <div class="player-controls">
+      <div class="equalizer" id="equalizer">
+        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+        <div class="eq-bar"></div><div class="eq-bar"></div>
+      </div>
+      <button class="btn-record" id="recordBtn" aria-label="Record">⏺</button>
+      <button class="btn-play"   id="playBtn"   aria-label="Play">▶</button>
+    </div>
+  </div>
+
+  <div class="inner-narrow">
+
+    <!-- Host -->
+    <div class="section reveal">
+      <div class="section-label">Host</div>
+      <div class="host-row" id="listen-host-card" tabindex="0" role="button">
+        <div class="host-photo">
+          <div class="loading-pulse" style="width:100%;height:100%"></div>
+        </div>
+        <div class="host-body">
+          <div class="host-name">
+            <div class="loading-pulse" style="width:140px;height:13px"></div>
+          </div>
+          <div class="host-bio" style="margin-top:6px">
+            <div class="loading-pulse" style="width:260px;height:11px"></div>
+          </div>
+          <span class="host-link" style="margin-top:8px;display:inline-block">Learn more →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="section reveal">
+      <div class="section-label">Show Features</div>
+      <ul class="features-list" id="listen-features-list">
+        <li><div class="loading-pulse" style="height:11px;width:220px"></div></li>
+        <li><div class="loading-pulse" style="height:11px;width:190px;margin-top:8px"></div></li>
+      </ul>
+    </div>
+
+    <!-- Schedule -->
+    <div class="section reveal">
+      <div class="section-label">Today's Schedule</div>
+      <ul class="schedule-list" id="listen-schedule-list">
+        <li class="schedule-row"><div class="loading-pulse" style="height:12px;grid-column:1/-1"></div></li>
+        <li class="schedule-row"><div class="loading-pulse" style="height:12px;grid-column:1/-1;margin-top:4px"></div></li>
+      </ul>
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="section reveal">
+      <div class="section-label">Song Requests &amp; Dedications</div>
+      <div class="whatsapp-block" id="listen-wa-block">
+        <div class="loading-pulse" style="height:40px"></div>
+      </div>
+    </div>
+
+    <footer class="reveal">
+      <div class="footer-links">
+        <a onclick="showPage('contact')">Facebook</a>
+        <a onclick="showPage('contact')">TikTok</a>
+        <a onclick="showPage('contact')">WhatsApp</a>
+      </div>
+      <div class="footer-copy"></div>
+    </footer>
+  </div>
+</div><!-- /page-listen -->
+
+
+<!-- ══════════════════════════════
+     PAGE: SHOWS
+══════════════════════════════ -->
+<div class="page" id="page-shows">
+  <div class="page-header reveal">
+    <div class="page-header-label">Programming</div>
+    <div class="page-header-title">Shows</div>
+  </div>
+  <div class="shows-grid" id="shows-grid">
+    <div class="show-card reveal"><div class="loading-pulse" style="height:160px"></div></div>
+    <div class="show-card reveal"><div class="loading-pulse" style="height:160px"></div></div>
+    <div class="show-card reveal"><div class="loading-pulse" style="height:160px"></div></div>
+  </div>
+  <footer class="reveal" style="max-width:var(--max);margin:0 auto">
+    <div class="footer-links">
+      <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+    </div>
+    <div class="footer-copy"></div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE: SHOW DETAIL
+══════════════════════════════ -->
+<div class="page" id="page-show-detail">
+  <div class="show-detail-wrap">
+    <a class="back-link reveal" onclick="showPage('shows')">← Back to Shows</a>
+    <div class="show-hero reveal" id="show-detail-hero">
+      <span class="show-hero-emoji">🎙</span>
+      <div class="show-hero-info">
+        <div class="show-hero-name" id="show-detail-hero-name"></div>
+        <div class="show-hero-time" id="show-detail-hero-time"></div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">About the Show</div>
+      <p id="show-detail-about" style="font-size:.88rem;color:var(--muted);line-height:1.8"></p>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Show Features</div>
+      <ul class="features-list" id="show-detail-features"></ul>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Hosts</div>
+      <div id="show-detail-hosts"></div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Schedule</div>
+      <ul class="schedule-list" id="show-detail-schedule"></ul>
+    </div>
+    <footer class="reveal">
+      <div class="footer-links">
+        <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+      </div>
+      <div class="footer-copy"></div>
+    </footer>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE: HOSTS
+══════════════════════════════ -->
+<div class="page" id="page-hosts">
+  <div class="page-header reveal">
+    <div class="page-header-label">The Team</div>
+    <div class="page-header-title">Hosts</div>
+  </div>
+  <div class="hosts-grid" id="hosts-grid">
+    <div class="host-card reveal"><div class="loading-pulse" style="height:120px"></div></div>
+    <div class="host-card reveal"><div class="loading-pulse" style="height:120px"></div></div>
+    <div class="host-card reveal"><div class="loading-pulse" style="height:120px"></div></div>
+  </div>
+  <footer class="reveal" style="max-width:var(--max);margin:0 auto">
+    <div class="footer-links">
+      <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+    </div>
+    <div class="footer-copy"></div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE: HOST PROFILE
+══════════════════════════════ -->
+<div class="page" id="page-host-profile">
+  <div class="host-profile-wrap">
+    <a class="back-link reveal" onclick="showPage('hosts')">← Back to Hosts</a>
+    <div class="host-profile-hero reveal" id="host-profile-hero">
+      <span class="host-profile-emoji">🎙</span>
+    </div>
+    <div class="section reveal">
+      <div class="host-profile-name" id="host-profile-name"></div>
+      <div class="host-profile-role" id="host-profile-role"></div>
+      <div class="host-profile-bio"  id="host-profile-bio"></div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Shows</div>
+      <div id="host-profile-shows"></div>
+    </div>
+    <footer class="reveal">
+      <div class="footer-links">
+        <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+      </div>
+      <div class="footer-copy"></div>
+    </footer>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE: BLOG
+══════════════════════════════ -->
+<div class="page" id="page-blog">
+  <div class="page-header reveal">
+    <div class="page-header-label">Stories &amp; Updates</div>
+    <div class="page-header-title">Blog</div>
+  </div>
+  <div class="blog-page-list" id="blog-page-list">
+    <div style="padding:var(--sp)"><div class="loading-pulse" style="height:100px"></div></div>
+    <div style="padding:var(--sp)"><div class="loading-pulse" style="height:100px"></div></div>
+  </div>
+  <footer class="reveal" style="max-width:var(--max);margin:0 auto">
+    <div class="footer-links">
+      <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+    </div>
+    <div class="footer-copy"></div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE: ARTICLE
+══════════════════════════════ -->
+<div class="page" id="page-article">
+  <div class="article-wrap">
+    <a class="back-link reveal" onclick="showPage('blog')">← Back to Blog</a>
+    <div class="article-hero reveal" id="article-hero">
+      <span class="article-hero-emoji">📰</span>
+    </div>
+    <div class="section reveal">
+      <div class="article-meta"  id="article-meta"></div>
+      <div class="article-title" id="article-title"></div>
+      <div class="article-content" id="article-content"></div>
+    </div>
+    <footer class="reveal">
+      <div class="footer-links">
+        <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+      </div>
+      <div class="footer-copy"></div>
+    </footer>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE: PROMOTIONS
+══════════════════════════════ -->
+<div class="page" id="page-promotions">
+  <div class="page-header reveal">
+    <div class="page-header-label">Giveaways &amp; Competitions</div>
+    <div class="page-header-title">Promotions</div>
+  </div>
+  <div class="promos-wrap">
+
+    <div class="section reveal" style="padding:0;border-bottom:1px solid var(--line)">
+      <div style="padding:var(--sp) var(--sp) 14px;border-bottom:1px solid var(--line)">
+        <div class="section-label">Current Promotion</div>
+      </div>
+      <div class="featured-promo">
+        <div class="featured-promo-art" id="featured-promo-art">
+          <span class="featured-promo-emoji">🎫</span>
+        </div>
+        <div class="featured-promo-body" id="featured-promo-body">
+          <div class="featured-promo-label"></div>
+          <div class="featured-promo-title"></div>
+          <div class="featured-promo-text"></div>
+          <a class="featured-promo-cta" href="#">Enter Now →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section reveal" style="padding:var(--sp) var(--sp) 14px;border-bottom:1px solid var(--line)">
+      <div class="section-label">Past Promotions</div>
+    </div>
+    <div class="past-promos-grid" id="past-promos-grid">
+      <div class="past-promo-card reveal"><div class="loading-pulse" style="height:60px"></div></div>
+      <div class="past-promo-card reveal"><div class="loading-pulse" style="height:60px"></div></div>
+    </div>
+
+    <div class="section reveal" style="padding:var(--sp) var(--sp) 14px;border-bottom:1px solid var(--line)">
+      <div class="section-label">Recent Winners</div>
+    </div>
+    <ul class="winners-list" id="winners-list">
+      <li class="winner-row reveal"><div class="loading-pulse" style="height:12px;flex:1"></div></li>
+      <li class="winner-row reveal"><div class="loading-pulse" style="height:12px;flex:1"></div></li>
+    </ul>
+
+  </div>
+  <footer class="reveal" style="max-width:var(--max);margin:0 auto">
+    <div class="footer-links">
+      <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+    </div>
+    <div class="footer-copy"></div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE: ABOUT
+══════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="about-hero reveal">
+      <div class="about-station" id="about-station-logo">WV<span class="about-logo-accent">BZ</span><br/>98.7</div>
+      <div class="about-tagline" id="about-tagline" style="margin-top:12px"></div>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat reveal">
+        <div class="stat-num" id="stat-listeners"></div>
+        <div class="stat-label">Weekly Listeners</div>
+      </div>
+      <div class="about-stat reveal">
+        <div class="stat-num" id="stat-years"></div>
+        <div class="stat-label">Years on Air</div>
+      </div>
+      <div class="about-stat reveal">
+        <div class="stat-num" id="stat-shows"></div>
+        <div class="stat-label">Daily Shows</div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Who We Are</div>
+      <div class="about-body-text" id="about-who-text"></div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Our Mission</div>
+      <div class="about-body-text" id="about-mission-text"></div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Background</div>
+      <div class="about-body-text" id="about-bg-text"></div>
+    </div>
+    <footer class="reveal">
+      <div class="footer-links">
+        <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+      </div>
+      <div class="footer-copy"></div>
+    </footer>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE: CONTACT
+══════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-wrap">
+    <div class="page-header reveal" style="max-width:100%;padding-bottom:0;border:none">
+      <div class="page-header-label">Get in Touch</div>
+      <div class="page-header-title">Contact</div>
+    </div>
+    <div class="contact-primary reveal">
+      <div class="contact-wa-label">Primary Contact · WhatsApp</div>
+      <div class="contact-wa-num" id="contact-wa-number"></div>
+      <div class="contact-wa-desc" id="contact-wa-desc"></div>
+    </div>
+    <div class="section reveal" style="padding:var(--sp) var(--sp) 14px;border-bottom:none">
+      <div class="section-label">Find Us Online</div>
+    </div>
+    <div class="social-grid">
+      <div class="social-card reveal" id="social-facebook">
+        <div class="social-icon" style="background:#1877f2;color:#fff">f</div>
+        <div class="social-name">Facebook</div>
+        <div class="social-handle"></div>
+        <div class="social-go">Follow Us →</div>
+      </div>
+      <div class="social-card reveal" id="social-tiktok">
+        <div class="social-icon" style="background:#010101;color:#fff">T</div>
+        <div class="social-name">TikTok</div>
+        <div class="social-handle"></div>
+        <div class="social-go">Watch Us →</div>
+      </div>
+      <div class="social-card reveal" id="social-whatsapp">
+        <div class="social-icon" style="background:#25d366;color:#fff">W</div>
+        <div class="social-name">WhatsApp</div>
+        <div class="social-handle"></div>
+        <div class="social-go">Message Us →</div>
+      </div>
+    </div>
+    <div class="section reveal" style="border-bottom:none">
+      <div class="section-label">Station Address</div>
+      <div id="contact-address" style="font-size:.88rem;color:var(--muted);line-height:1.8"></div>
+    </div>
+    <footer class="reveal">
+      <div class="footer-links">
+        <a onclick="showPage('contact')">Facebook</a><a onclick="showPage('contact')">TikTok</a><a onclick="showPage('contact')">WhatsApp</a>
+      </div>
+      <div class="footer-copy"></div>
+    </footer>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     STICKY MINI PLAYER
+══════════════════════════════ -->
+<div class="mini-player-outer" id="miniOuter">
+  <div class="mini-inner" id="miniPlayer">
+    <div class="mini-live-badge">
+      <div class="mini-dot"></div>Live
+    </div>
+    <div class="mini-info">
+      <div class="mini-show" id="mini-show-name">Loading…</div>
+      <div class="mini-sub">WVBZ 98.7</div>
+    </div>
+    <div class="mini-eq" id="miniEq">
+      <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+      <div class="eq-bar"></div><div class="eq-bar"></div>
+    </div>
+    <button class="mini-btn" id="miniPlayBtn" aria-label="Play">▶</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     HOST MODAL
+══════════════════════════════ -->
+<div class="overlay" id="hostOverlay">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-host-row">
+      <div class="modal-photo" id="modal-host-photo"></div>
+      <div>
+        <div class="modal-name" id="modal-host-name"></div>
+        <div class="modal-role" id="modal-host-role"></div>
+      </div>
+    </div>
+    <p class="modal-bio" id="modal-host-bio"></p>
+    <div class="modal-links">
+      <a class="modal-link" id="modal-profile-link">Full Profile →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     SCRIPTS (ES modules)
+══════════════════════════════ -->
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>
