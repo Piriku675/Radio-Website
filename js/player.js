@@ -65,22 +65,31 @@ export function initMiniPlayerObserver() {
   }, { threshold: 0 }).observe(wrap);
 }
 
-// Dock mini player above footer when footer becomes visible
-const footer = document.querySelector("footer");
-if (footer && miniOuter) {
-  new IntersectionObserver(([e]) => {
-    if (e.isIntersecting) {
-      const footerTop = footer.getBoundingClientRect().top + window.scrollY;
-      miniOuter.style.position = "absolute";
-      miniOuter.style.top      = `${footerTop - miniOuter.offsetHeight}px`;
-      miniOuter.style.bottom   = "auto";
-    } else {
-      miniOuter.style.position = "";
-      miniOuter.style.top      = "";
-      miniOuter.style.bottom   = "";
-    }
-  }, { threshold: 0 }).observe(footer);
+// Dock mini player above footer when footer scrolls into view
+function updateMiniPlayerDock() {
+  if (!miniOuter || !miniOuter.classList.contains("visible")) return;
+
+  const activePage = document.querySelector(".page.active");
+  if (!activePage) return;
+
+  const footer = activePage.querySelector("footer");
+  if (!footer) return;
+
+  const footerRect   = footer.getBoundingClientRect();
+  const playerHeight = miniOuter.offsetHeight;
+  const viewHeight   = window.innerHeight;
+
+  if (footerRect.top < viewHeight) {
+    // Footer is visible — pin player just above it
+    const gap = viewHeight - footerRect.top;
+    miniOuter.style.transform = `translateY(-${gap}px)`;
+  } else {
+    // Footer out of view — stick to bottom normally
+    miniOuter.style.transform = "translateY(0)";
+  }
 }
+
+window.addEventListener("scroll", updateMiniPlayerDock, { passive: true });
 
 if (miniPlayer) {
   miniPlayer.addEventListener("click", () => {
