@@ -607,3 +607,7 @@ export function triggerReveals(container = document) {
   }, { threshold: 0.05 });
   els.forEach(el => ro.observe(el));
 }
+
+export function renderFacebookPosts(posts) {
+  console.log("Facebook posts:", posts);
+}
